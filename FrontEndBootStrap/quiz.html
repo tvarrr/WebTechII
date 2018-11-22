@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Dente &mdash; Colorlib Website Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,700,900"> 
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    
+    
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+  
+    <link rel="stylesheet" href="css/aos.css">
+
+    <link rel="stylesheet" href="css/style.css">
+	<style>
+	body {background-color: black;}
+	.question{
+	
+	color: white;
+    font-size: 30px;
+	
+	}
+	.options{
+	color: white;
+    font-size: 15px;
+	
+	}
+
+</style>
+    
+ </head>
+   <script>
+   qCounter=1;
+    var obj={
+        xhr: new XMLHttpRequest(),
+        getNextQuestion:function(){
+            //when readyState changes, call fn showDetails
+		    this.xhr.onreadystatechange=this.showQuestion;
+            this.xhr.open("GET","quiz_backend.php?q_id="+qCounter,true);
+            this.xhr.send();
+        },
+		showQuestion:function()
+		{
+    	if(this.readyState==4 && this.status==200){
+			
+    	    var res=this.responseText; //as text string
+    	    //convert to json object
+    	    var resJson=JSON.parse(res);
+			console.log(resJson);
+			q_id=resJson.q_id;
+			res_question=resJson.question;
+			res_options=resJson.options;
+			
+			var div_question = document.createElement("div");
+			div_question.setAttribute("class", "question");
+			div_question.innerHTML=res_question;
+			
+			document.getElementById("question_div").innerHTML=''
+			document.getElementById("question_div").appendChild(div_question);
+			
+			var res_options=JSON.parse(res_options);
+			for (var key in res_options)
+			{
+			option=res_options[key];
+			console.log(option);
+			var label = document.createElement("label");
+			var div_option= document.createElement("input");
+			div_option.type = "radio";
+			label.setAttribute("class", "options");
+			div_option.value="hi";
+			label.appendChild(div_option);
+			label.appendChild(document.createTextNode(option));
+			
+			document.getElementById("question_div").appendChild(label);
+			var br = document.createElement("br");
+			
+			document.getElementById("question_div").appendChild(br);
+
+			}
+			qCounter=qCounter+1;
+    	}
+		}
+	};
+  </script>
+  <body bgcolor="black">
+  
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div> <!-- .site-mobile-menu -->
+    
+    
+    <div class="site-navbar-wrap">
+      <div class="site-navbar">
+        <div class="container py-1">
+          <div class="row align-items-center">
+            <div class="col-2">
+              <h2 class="mb-0 site-logo"><a href="index.html">You Matter</a></h2>
+            </div>
+            <div class="col-10">
+              <nav class="site-navigation text-right" role="navigation">
+                <div class="container">
+                  <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
+
+                  <ul class="site-menu js-clone-nav d-none d-lg-block">
+                    <li class="has-children">
+                      <a href="index.html">Home</a>
+                      <ul class="dropdown arrow-top">
+                        <li><a href="#">Menu One</a></li>
+                        <li><a href="#">Menu Two</a></li>
+                        <li><a href="#">Menu Three</a></li>
+                        <li class="has-children">
+                          <a href="#">Sub Menu</a>
+                          <ul class="dropdown">
+                            <li><a href="#">Menu One</a></li>
+                            <li><a href="#">Menu Two</a></li>
+                            <li><a href="#">Menu Three</a></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li class="has-children">
+                      <a href="patients.html">Patients</a>
+                      <ul class="dropdown arrow-top">
+                        <li><a href="#">Menu One</a></li>
+                        <li><a href="#">Menu Two</a></li>
+                        <li><a href="#">Menu Three</a></li>
+                      </ul>
+                    </li>
+                    <li class="active"><a href="news.html">News</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-blocks-cover inner-page" style="background-image: url(images/hero_bg_1.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-7">
+
+			<div id='question_div'>
+            <div id='question' class='question'>
+			</div>
+			<div id='options' class='options'>
+			</div>
+			
+			</div>
+			</br></br>
+			<div class="site-block-27">
+              <div class="col-md-12">
+                  <input type="button" value="Next" class="btn btn-primary" onclick="obj.getNextQuestion()">
+				  &nbsp;&nbsp;&nbsp;
+				
+
+				</div>
+            </div>
+          </div>
+		  
+        </div>
+		
+      </div>
+	  
+    </div>  
+    
+  </div>
+
+  
+
+  
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/jquery.countdown.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/bootstrap-datepicker.min.js"></script>
+  <script src="js/aos.js"></script>
+
+  <script src="js/main.js"></script>
+    
+  </body>
+</html>
