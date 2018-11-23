@@ -65,7 +65,7 @@
             this.xhr.send();
         },
         saveAnswer: function(){
-          results.push(document.querySelector('input[name="ans"]:checked').value);
+          results.push(document.querySelector('input[name="options"]:checked').value);
           this.getNextQuestion();
         },
     		showQuestion:function()
@@ -82,7 +82,7 @@
     			
     			var div_question = document.createElement("div");
     			div_question.setAttribute("class", "question");
-          div_question.setAttribute("name", "ans");
+          // div_question.setAttribute("name", "ans");
     			div_question.innerHTML=res_question;
     			
     			document.getElementById("question_div").innerHTML=''
