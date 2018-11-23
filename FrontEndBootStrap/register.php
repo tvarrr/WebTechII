@@ -1,11 +1,33 @@
 <?php
    // connect to mongodb
+
+   // Platform
+   // $win = 0;
+
+   // connect to mongodb
+   // if ($win == 1) {
+   //    $m = new MongoClient("mongodb://localhost:27017");
+   //    echo "Connection to database successfully\n";
+      
+   //    // select a database
+   //    $db = $m->wt2quiz;
+   //    echo "Database wt2quiz selected" . "\n";
+
+   //    $collection = $db->users;
+   //    echo "Collection selected succsessfully" . "\n";
+
+   // }
+   // else{
+   //    $m = new MongoDB\Driver\Manager();
+   // }
+
+
    $m = new MongoClient("mongodb://localhost:27017");
-	
+   
    echo "Connection to database successfully\n";
    // select a database
    $db = $m->wt2quiz;
-	
+   
    echo "Database wt2quiz selected" . "\n";
    
    $collection = $db->users;
@@ -23,21 +45,20 @@
       "Email" => $m,
       "dob" => $d,
       "username" => $u,
-	  "password" => $p
+     "password" => $p
    );
    
    $collection->insert($document);
    echo "Document inserted successfully";
-
    /*$cursor = $collection->findOne(array('user_name' => 'Tvarita'));
    print_r($cursor['password']);*/
  
-
-
    // iterate cursor to display title of documents
-	
+   
    /*foreach ($cursor as $document) {
       echo $document["email"] . "\n";
    }*/
+   
+?>
    
 ?>

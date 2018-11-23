@@ -40,56 +40,76 @@
     
  </head>
    <script>
+
    qCounter=1;
     var obj={
         xhr: new XMLHttpRequest(),
+        results: [],
+        sendAnswers: function(){
+          $.ajax({
+              type:'POST',
+              url:'analysis.php',
+              data: {'answers': this.results},
+              success: function(data){
+                console.log(data);
+              },
+              error: function(error){
+                console.log(error);
+              }
+            });
+        },
         getNextQuestion:function(){
             //when readyState changes, call fn showDetails
 		    this.xhr.onreadystatechange=this.showQuestion;
             this.xhr.open("GET","quiz_backend.php?q_id="+qCounter,true);
             this.xhr.send();
         },
-		showQuestion:function()
-		{
-    	if(this.readyState==4 && this.status==200){
-			
-    	    var res=this.responseText; //as text string
-    	    //convert to json object
-    	    var resJson=JSON.parse(res);
-			console.log(resJson);
-			q_id=resJson.q_id;
-			res_question=resJson.question;
-			res_options=resJson.options;
-			
-			var div_question = document.createElement("div");
-			div_question.setAttribute("class", "question");
-			div_question.innerHTML=res_question;
-			
-			document.getElementById("question_div").innerHTML=''
-			document.getElementById("question_div").appendChild(div_question);
-			
-			var res_options=JSON.parse(res_options);
-			for (var key in res_options)
-			{
-			option=res_options[key];
-			console.log(option);
-			var label = document.createElement("label");
-			var div_option= document.createElement("input");
-			div_option.type = "radio";
-			label.setAttribute("class", "options");
-			div_option.value="hi";
-			label.appendChild(div_option);
-			label.appendChild(document.createTextNode(option));
-			
-			document.getElementById("question_div").appendChild(label);
-			var br = document.createElement("br");
-			
-			document.getElementById("question_div").appendChild(br);
+        saveAnswer: function(){
+          results.push(document.querySelector('input[name="ans"]:checked').value);
+          this.getNextQuestion();
+        },
+    		showQuestion:function()
+    		{
+        	if(this.readyState==4 && this.status==200){
+    			
+        	    var res=this.responseText; //as text string
+        	    //convert to json object
+        	    var resJson=JSON.parse(res);
+    			console.log(resJson);
+    			q_id=resJson.q_id;
+    			res_question=resJson.question;
+    			res_options=resJson.options;
+    			
+    			var div_question = document.createElement("div");
+    			div_question.setAttribute("class", "question");
+          div_question.setAttribute("name", "ans");
+    			div_question.innerHTML=res_question;
+    			
+    			document.getElementById("question_div").innerHTML=''
+    			document.getElementById("question_div").appendChild(div_question);
+    			
+    			var res_options=JSON.parse(res_options);
+    			for (var key in res_options)
+    			{
+      			option=res_options[key];
+      			console.log(option);
+      			var label = document.createElement("label");
+      			var div_option= document.createElement("input");
+      			div_option.type = "radio";
+      			label.setAttribute("class", "options");
+      			div_option.value="hi";
+      			label.appendChild(div_option);
+      			label.appendChild(document.createTextNode(option));
+      			
+    			document.getElementById("question_div").appendChild(label);
+    			var br = document.createElement("br");
+    			
+    			document.getElementById("question_div").appendChild(br);
 
-			}
-			qCounter=qCounter+1;
-    	}
-		}
+    			}
+    			qCounter=qCounter+1;
+        	}
+    		}
 	};
   </script>
   <body bgcolor="black">
@@ -171,11 +191,12 @@
 			</br></br>
 			<div class="site-block-27">
               <div class="col-md-12">
-                  <input type="button" value="Next" class="btn btn-primary" onclick="obj.getNextQuestion()">
+                  <input type="button" value="Next" class="btn btn-primary" onclick="obj.saveAnswer()">
 				  &nbsp;&nbsp;&nbsp;
-				
-
 				</div>
+          <div> 
+            <button type="btn btn-success submit" onclick="sendAnswers()" ></button>
+          </div>
             </div>
           </div>
 		  
